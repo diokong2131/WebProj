@@ -3,9 +3,23 @@ package common;
 public class Employee {
 	private int employeeId;
 	private String firstName;
-	private String lasttName;
+	private String lastName;
 	private String email;
 	private int salary;
+	private String hireDate;
+	public String getHireDate() {
+		return hireDate;
+	}
+	public void setHireDate(String hireDate) {
+		this.hireDate = hireDate;
+	}
+	public String getJobId() {
+		return jobId;
+	}
+	public void setJobId(String jobId) {
+		this.jobId = jobId;
+	}
+	private String jobId;
 	
 	public int getEmployeeId() {
 		return employeeId;
@@ -19,11 +33,11 @@ public class Employee {
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
 	}
-	public String getLasttName() {
-		return lasttName;
+	public String getLastName() {
+		return lastName;
 	}
-	public void setLasttName(String lasttName) {
-		this.lasttName = lasttName;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	public String getEmail() {
 		return email;
