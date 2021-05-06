@@ -2,26 +2,72 @@
 <html lang="en">
 
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ajax.html</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ajax.html</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var frm = document.getElementById('frm');
+            frm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                console.log(e);
+
+                var ln = document.getElementById('last_name').value;
+                var fn = document.getElementById('first_name').value;
+                var em = document.getElementById('email').value;
+                var hd = document.getElementById('hire_date').value;
+                var ji = document.getElementById('job_id').value;
+                var sa = document.getElementById('salary').value;
+
+                var data = 'last_name=' + ln + '&first_name=' + fn + '&salary=' + sa + '&email=' + em +
+                    '&hire_date=' + hd + '&job_id=' + ji;
+                var xhtp = new XMLHttpRequest();
+                xhtp.open('post', 'empList.do');
+                xhtp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded')
+                xhtp.send(data);
+
+                xhtp.onreadystatechange = function () {
+                    if (xhtp.readyState == 4 && xhtp.status == 200) {
+                        console.log(xhtp.responseText);
+                        var obj = JSON.parse(xhtp.responseText);
+                        console.log(obj.employee_id, obj.last_name, obj.first_name, obj.salary, obj
+                            .email, obj.hire_date, obj.job_id, );
+
+                    }
+                }
+            })
+        })
+    </script>
 </head>
 
 <body>
 
-	<form action="empList.do" method="POST">
-		LastName : <input type="text" name="last_name" id=""><br>
-		Email : <input type="text" name="email" id=""><br>
-		HireDate : <input type="text" name="hire_date" id=""><br>
-		JobId: <input type="text" name="job_id" id=""><br> 
-		<input type="submit" value="저장"> <input type="reset" value="취소">
-	</form>
+    <form id="frm" action="empList.do" method="POST">
 
-	<div id="show"></div>
-	<script>
+        LastName : <input type="text" name="last_name" id="last_name"><br>
+        FirstName : <input type="text" name="first_name" id="first_name"><br>
+        Email : <input type="text" name="email" id="email"><br>
+        HireDate : <input type="text" name="hire_date" id="hire_date"><br>
+        JobId: <input type="text" name="job_id" id="job_id"><br>
+        Salary: <input type="text" name="salary" id="salary"><br>
+        <input type="submit" value="저장"> <input type="reset" value="취소">
+    </form>
+
+    <div id="show"></div>
+    <script>
         var xhtp = new XMLHttpRequest();
-
+        var table;
+        var title = {
+            employee_id: '사원번호',
+            first_name: '이름',
+            last_name: '성씨',
+            Salary: '급여',
+            email: '이메일',
+            hire_date: '입사일자',
+            job_id: '직무',
+            func: '기능'
+        };
         xhtp.onreadystatechange = function () {
             // console.log(xhtp.readyState, xhtp.status);
             if (xhtp.readyState == 4 && xhtp.status == 200) {
@@ -32,7 +78,10 @@
                 //table tr td => div.appendChild();
 
                 var table = document.createElement('table');
+
                 table.setAttribute('border', '1');
+                table.setAttribute('id', 'tbl')
+                
                 //배열 갯수만큼 tr생성
                 for (var data of obj) {
                     var tr = document.createElement('tr');
@@ -42,13 +91,17 @@
                         var text = document.createTextNode(data[field]);
                         td.appendChild(text);
                         tr.appendChild(td);
+                      
                     }
                     table.appendChild(tr);
                 }
                 // div#show 의 자식으로 table을 달아준다.
                 document.getElementById('show').appendChild(table);
+               
             }
         }
+        
+        
         xhtp.open('get', 'empList.do?dept=50');
         xhtp.send();
     </script>

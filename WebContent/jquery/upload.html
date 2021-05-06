@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>jquery/upload.html</title>
+    <style>
+        #img {
+            height: 220px;
+            width: 180px;
+
+        }
+    </style>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        	//아래쪽에 내용보이기..<div ><table></table></ div>
+        	$.ajax({
+        		url: "../getFileListServlet",
+        		dataType: 'json',//json -> object 변환
+        		success: function() {
+					//table 활용해서 리스트 출력,
+					                   	
+                	console.log(result);
+                    let $table = $('<table id="tbl" />').attr('border', '1');
+                   // let $tr = $('<tr />').append.table
+                  //  let $td = $('<td />').append.tr
+                                                     
+                   
+                    
+                    for (let i = 0; i <result.length; i++){
+                    	let $tr = $('<tr />').append(
+                    		$('<td />').html(result[i].num),
+                    		$('<td />').html(result[i].author),
+                    		$('<td />').html(result[i].title),
+                    		$('<td />').html(result[i].filename)
+                    		
+                    	);
+                    	$table.append($tr);
+                    }
+                    $('#show').append($table);
+                },
+				
+				error: function() {
+					
+				}
+        		
+        	});
+        	
+        	
+        	
+        	//이미지 보이게 하기
+            $('#filename').change(function () {
+                for (let file of this.files) {
+                    $('#img').attr('src', URL.createObjectURL(file));
+                }
+            });
+            
+            //전송을 누르면 보이게
+            $('#frm').submit(function(e) {
+            	e.preventDefault();
+            	let frm = document.getElementById('frm');
+            	let data = new FormData(frm);
+            	for(let k of data.entries()){
+            	     	console.log(k);
+            	}
+            	//비동기 호출, 파일업로드 서블릿
+				$.ajax({
+					contentType: false,
+					processData: false,
+					url: $('#frm').attr('action'),
+					type: 'post',
+					dataType: 'JSON',
+					data: data,
+					success: function(result) {
+						console.log(result);		
+					},
+					error: function(err) {
+						console.log(err);
+					}
+				});
+			});
+        });
+    </script>
+</head>
+
+<body>
+    <h1>ajax 파일 업로드</h1>
+    <form id='frm' action="../fileUploadServlet" method="post" enctype="multipart/form-data">
+    <div id="show"></div>
+        <table border="1">
+            <tr>
+                <td><label for="num">번호</label></td>
+                <td><input type="text" name="num" id="num"></td>
+                <td rowspan="4"><img src="" alt="선택한 파일." id="img"> </td>
+            </tr>
+            <tr>
+                <td><label for="author">저자</label></td>
+                <td><input type="text" name="author" id="author"></td>
+
+            </tr>
+            <tr>
+                <td><label for="title">제목</label></td>
+                <td><input type="text" name="title" id="title"></td>
+
+            </tr>
+            <tr>
+                <td><label for="filename">파일첨부</label></td>
+                <td><input type="file" name="filename" id="filename"></td>
+
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <input type="submit"><br>
+                    <input type="reset">
+            </tr>
+        </table>
+
+    </form>
+</body>
+
+</html>

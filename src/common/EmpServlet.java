@@ -33,10 +33,12 @@ public class EmpServlet extends HttpServlet {
 		int cnt = 0;
 		for (Employee emp : list) {
 			jsonData += ("{\"empId\":\"" + emp.getEmployeeId()//
-					+ "\", \"fname\":\"" + emp.getFirstName() //
-					+ "\", \"lname\":\"" + emp.getLastName() //
-					+ "\", \"email\":\"" + emp.getEmail() //
-					+ "\", \"salary\":\"" + emp.getSalary() //
+					+ "\",\"lname\":\"" + emp.getLastName() //
+					+ "\",\"fname\":\"" + emp.getFirstName() //
+					+ "\",\"salary\":\"" + emp.getSalary() //
+					+ "\",\"email\":\"" + emp.getEmail() //
+					+ "\",\"hdate\":\"" + emp.getHireDate() //
+					+ "\",\"jobId\":\"" + emp.getJobId() //
 					+ "\"}");
 			if (++cnt == list.size()) {
 				continue;
@@ -52,19 +54,36 @@ public class EmpServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 //	      super.doPost(req, resp);
 		String lastName = req.getParameter("last_name");
+		String firstName = req.getParameter("first_name");
+		int salary = Integer.parseInt(req.getParameter("salary"));
 		String email = req.getParameter("email");
 		String hireDate = req.getParameter("hire_date");
 		String jobId = req.getParameter("job_id");
+		
+
 
 		Employee emp = new Employee();
 		emp.setLastName(lastName);
+		emp.setFirstName(firstName);
+		emp.setSalary(salary);
 		emp.setEmail(email);
 		emp.setHireDate(hireDate);
 		emp.setJobId(jobId);
+		
 
 		EmpDAO dao = new EmpDAO();
-		dao.insertEmp(emp);
+		Employee empl = dao.insertEmpBySeq(emp);
+		//{"eid":"?","fName":"?".......}
+		PrintWriter out = resp.getWriter();
+		out.print("{\"employee_id\":\""+empl.getEmployeeId()+"\","//
+	            +"\"last_name\":\""+empl.getLastName()+"\","//
+	            +"\"first_name\":\""+empl.getFirstName()+"\","//
+	            +"\"salary\":\""+empl.getSalary()+"\","//
+			    +"\"email\":\""+empl.getEmail()+"\","//
+	            +"\"hire_date\":\""+empl.getHireDate()+"\","//
+	            +"\"job_id\":\""+empl.getJobId()+"\""//
+	            +"}");
 
-		resp.getWriter().print("<h1>Success</h1>");
+		
 	}
 }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function(){
+            $.ajax({
+                url: '../jquery/memberServlet.do',
+                type: 'get', 
+                //data: 'p1=hello&p2=nice',
+                dataType: 'json',
+                success: showList, function(resolve){
+                   	
+                	console.log(resolve);
+                    let $table = $('<table id="tbl" />').attr('border', '1');
+                   // let $tr = $('<tr />').append.table
+                  //  let $td = $('<td />').append.tr
+                                                     
+                   
+                    
+                    for (let i = 0; i < resolve.length; i++){
+                    	let $tr = $('<tr />').append(
+                    		$('<td />').html(resolve[i].id),
+                    		$('<td />').html(resolve[i].name),
+                    		$('<td />').html(resolve[i].age),
+                    	);
+                    	$table.append($tr);
+                    }
+                    $('#show').append($table);
+                },
+                error: function(reject){
+                	window.alert(reject)
+                    console.error(reject);
+                }
+            		
+            });
+			$('#frm').on('submit', function(e) {
+				e.preventDefault(); //submit 기능 취소 서블릿페이지로 이동(X)
+				$.ajax({
+					url: $('frm').attr('action'), //'memberServlet.do'
+					data: 'm_id='+$('#m_id').val()+'&m_name='+$('#m_name').val()+'&m_age='+$('#m_age').val(), //key=val&key2=val2&...
+					dataType: 'json',
+					type: 'post',
+					success: function(data) {
+						console.log(data);
+					},
+					error: function(err) {
+						console.error(err);
+					}
+				});
+			});
+        })
+        
+        function showList(){
+        	
+        }
+    </script>
+</head>
+<body>
+    <form action="memberServlet.do" method="post">
+        ID: <input type="number" name="m_id" id="m_id" value=1 />
+        이름: <input type="text" name="m_name" id="m_name" value='hong' /><br>
+        나이: <input type="number" name="m_age" id="m_age" value=20 /><br>
+        <input type="submit" value="저장">
+
+    </form>
+    <div id="show"></div>
+</body>
+</html>

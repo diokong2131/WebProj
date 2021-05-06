@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="../js/jquery-3.6.0.min.js"></script>
+    <script>
+        $(function(){
+            $("strong").unwrap();
+            $(".ct1").wrap("<div/>");
+            $(".ct2").wrapAll("<div/>");
+            $("li").wrapInner("<h3 />");
+        })
+    </script>
+    <style>
+        div{background-color: aqua;}
+    </style>
+</head>
+<body>
+    <h1 id="tit_1">
+    <strong>객체조작</strong>
+</h1>
+<p class="ct1">1</p>
+<p class="ct1">2</p>
+<p class="ct2">3</p>
+<p class="ct2">4</p>
+<ul>
+    <li>3</li>
+    <li>4</li>
+</ul>
+</body>
+</html>

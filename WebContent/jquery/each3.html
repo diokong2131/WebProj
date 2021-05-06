@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>jquery/each3.html</title>
+    <script src='../js/jquery-3.6.0.min.js'></script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '../MOCK_DATA.json',
+                dataType: 'json',
+                success: successCallFnc,
+                error: errorCallFnc
+            }); // XMLHTTPREQUEST();
+
+        });
+
+        function successCallFnc(resolve) {
+            console.log(resolve);
+            let tbl = $('<table />');
+            tbl.attr('border', '1');
+            $.each(resolve, function (i, o) {
+                let trTag = $('<tr />'); //create row.
+                trTag.attr('id', o.id);
+                trTag.mouseover(mouseoverFnc);
+                trTag.mouseout(mouseoutFnc);
+                let btn = $('<button />').html('Del');
+                btn.click((evnt)=>{
+                    console.log($(this), evnt);
+                    evnt.currentTarget.parentNode.parentNode.remove();
+                });
+                trTag.append(
+                  
+                    $('<td />').html(o.id), //
+                    $('<td />').html(o.first_name), //
+                    $('<td />').html(o.last_name), //
+                    $('<td />').html(o.email), //
+                    $('<td />').append(btn)
+                );
+                tbl.append(trTag);
+            });
+
+            $('#show').append(tbl);
+        }
+
+        function errorCallFnc(reject){
+            console.log(reject);
+        }
+
+
+        function mouseoverFnc(){
+            $(this).css('background-color', 'blue');
+        }
+
+        function mouseoutFnc(){
+            $(this).css('background-color', 'palevioletred');
+        }
+
+
+
+        function clickFnc(){
+            alert($(this).attr('id'));
+        }
+    </script>
+</head>
+
+<body>
+    <div id="show"></div>
+</body>
+
+</html>

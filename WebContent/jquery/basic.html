@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>basic.html</title>
+    <style>
+        #sec1>h1{
+            background-color: gray;
+        }
+    </style>
+
+    <script src='../js/jquery-3.6.0.min.js'></script>
+    <script>
+        $(document).ready(function(){
+            sec1 = $('#sec1');
+            console.log(sec1.children().eq(0).html());
+   
+            // $('.sec1>ul').children().eq(0).css('color', 'blue');
+            $('li').eq(0).parent().css('background-color', 'gray');
+        });
+    </script>
+</head>
+
+<body>
+    <h1>Apple</h1>
+    <section id='sec1'>
+        <h1>Banana</h1>
+        <ul>
+            <li>Yellow</li>
+            <li>Red</li>
+        </ul>
+    </section>
+    <section class='sec1'>
+        <h1>Cherry</h1>
+        <ul>
+            <li>Yellow</li>
+            <li>Red</li>
+        </ul>
+    </section>
+    
+</body>
+
+</html>
