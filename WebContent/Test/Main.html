@@ -52,8 +52,7 @@
                   });
 
                   $tr.append(
-                     $('<td />').html(obj.num),
-                     $('<td />').append(alink),
+                     $('<td />').html(obj.id),
                      $('<td />').html(obj.author),
                      $('<td />').html(obj.fileName),
                      $('<td />').html(obj.day),
@@ -68,64 +67,18 @@
                console.log(err);
             }
          })
-         // delete 
-         function delRow(e) {
-            let id = $(this).parent().parent().children().eq(0).html();
-            let delTr = $(this).parent().parent();
-            e.preventDefault(); // default 기능 차단
-            e.stopPropagation(); // 이벤트 전파 차단
-            $.ajax({
-               url: '../fileDelServlet',
-               data: 'num=' + id,
-               success: function () {
-                  //화면삭제
-                  delTr.remove();
-               },
-               error: function (err) {
-                  console.log(err);
-               }
-            });
-         }
-         
-         // linkTag click callback
-         function linkClickCallBack(e) {
-            console.log('a클릭', $(this).parentsUntil('table').eq(0).children().eq(0).html());
-            let num = $(this).parent().parent().children().eq().html();
-            num = $(this) // a태그
-               .parent() // td태그
-               .prev() // <td>num<td/> 
-               .html(); // num
-            e.preventDefault(); // default 기능 차단
-            e.stopPropagation(); // 이벤트 전파 차단
-            $.ajax({
-               url: '../getFileServlet', // 호출할 페이지(servlet)
-               data: 'num=' + num,
-               dataType: 'json',
-               type: 'get',
-               success: function (result) {
-                  console.log(result);
-                  // 화면에 가져온 정보를 보여주도록
-                  $('#num').val(result.num);
-                  $('#author').val(result.author);
-                  $('#title').val(result.title);
-                  $('#img').attr('src', '../upload/' + result.filename);
-               },
-               error: function (reject) {
-                  console.log(reject);
-               }
-            });
-         }
-
+ 
+      
          // table title 
          function getTitle() {
             let $title = $('<tr />');
             $title.css('background-color', 'pink');
             $title.append(
-               $('<th />').html('번호'),
-               $('<th />').html('제목'),
-               $('<th />').html('저자'),
-               $('<th />').html('파일명'),
-               $('<th />').html('날짜'),
+               $('<th />').html('사용ID'),
+               $('<th />').html('이름'),
+               $('<th />').html('비밀번호'),
+               $('<th />').html('연락처'),
+               $('<th />').html('성별'),
                $('<th />').html('삭제')
             );
             return $title;
@@ -138,7 +91,7 @@
             }
          });
 
-         // submit -> imege 불러와서 화면에 보여준다
+       /*  // submit -> imege 불러와서 화면에 보여준다
          $('#frm').submit(function (e) {
             e.preventDefault(); // 새로고침X
             let frm = document.getElementById('frm');
@@ -159,10 +112,10 @@
                   console.log(err);
                }
             });
-         });
+         }); */
 
          // 클릭 시 행추가
-         function createRow(result) {
+     /*    function createRow(result) {
             console.log(result);
             let $delBtn = $('<button />').html('Del');
             let alink = $('<a />').attr('href', '#').html(result.title);
@@ -178,9 +131,9 @@
             );
 
             $table.append($tr);
-         }
+         } */
          
-         // 수정버튼 클릭이벤트 
+         /*  // 수정버튼 클릭이벤트 
          $('#modifyBtn').click(function (e) {      
             e.preventDefault();   
             let frm = document.getElementById('frm');
@@ -206,7 +159,7 @@
                   console.log(err);
                }
             })
-         })
+         })*/
          
       });
    </script>
@@ -217,27 +170,32 @@
    <form id='frm' action='../fileUploadServlet' method='post' enctype='multipart/form-data'>
       <table border="1">
          <tr>
-            <td><label for="num">번호</label></td>
+            <td><label for="num">사용ID</label></td>
             <td><input type="text" name="num" id="num"></td>
             <td rowspan="4"><img src="" alt="선택한파일." id="img"></td>
          </tr>
          <tr>
-            <td><label for="author">저자</label></td>
-            <td><input type="text" name="author" id="author"></td>
+            <td><label for="author">이름</label></td>
+            <td><input type="text" name="name" id="name"></td>
          </tr>
          <tr>
-            <td><label for="title">제목</label></td>
-            <td><input type="text" name="title" id="title"></td>
+            <td><label for="title">비밀번호</label></td>
+            <td><input type="text" name="pass" id="pass"></td>
          </tr>
          <tr>
-            <td><label for="filename">파일첨부</label></td>
-            <td><input type="file" name="filename" id="filename"></td>
+            <td><label for="filename">연락처</label></td>
+            <td><input type="text" name="phone" id="phone"></td>
+         </tr>
+         <tr>
+            <td><label for="filename">성별</label></td>
+            <td><input type="radio" name="gender" val="남성"></td>
+            <td><input type="radio" name="gender" val="여성"></td>
          </tr>
          <tr>
             <td colspan="3">
-               <input type="submit">
-               <input type="reset">
-               <button id="modifyBtn">수정</button>
+               <input type="submit" val="등록">
+               <input type="reset" val="취소">
+               
             </td>
          </tr>
       </table>
